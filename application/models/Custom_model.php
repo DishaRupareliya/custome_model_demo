@@ -112,13 +112,14 @@ class Custom_model extends CI_Model
      * @param  array $where          where array condition
      * @param  array $join           join table name
      * @param  array $join_condition join condition
+     * @param  string $type         join type
      * @return array                 [description]
      */
-    public function getRowsWhereJoin($table, $where, $join, $join_condition)
+    public function getRowsWhereJoin($table, $where, $join, $join_condition, $type)
     {
         $this->db->select(" * ")->from($table);
         for ($i = 0; $i < count($join); $i++) {
-            $this->db->join($join[$i], $join_condition[$i]);
+            $this->db->join($join[$i], $join_condition[$i], $type);
         }
         $this->db->where($where);
         $query = $this->db->get();

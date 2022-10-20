@@ -49,7 +49,7 @@ class Custom_controller extends My_Controller {
 	public function join(){
 		$join = ['user_feedback'];
 		$condition = ['user_custom_demo.id = user_feedback.id'];
-		$data = $this->cmd->getRowsWhereJoin('user_custom_demo',[], $join, $condition);
+		$data = $this->cmd->getRowsWhereJoin('user_custom_demo',[], $join, $condition, 'left');
 		$qry = $this->db->last_query();
 		$result = [
 			'data' => $data,
