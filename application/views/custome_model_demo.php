@@ -29,14 +29,15 @@
 				<li><a href="" class="navbar-brand" id="gets-value">Get Single Value</a></li>
 				<li><a href="" class="navbar-brand" id="customQ">customQuery</a></li>
 				<li><a href="" class="navbar-brand" id="getResult">getResult</a></li>
-				<li><a href="" class="navbar-brand">Check Availability</a></li>
-				<li><a href="" class="navbar-brand">Find In Set</a></li>
+				<li><a href="" class="navbar-brand" id="check">Check Availability</a></li>
+				<li><a href="" class="navbar-brand" id="find_in_set">Find In Set</a></li>
 				</ul>
 			</div>
 			<div class="col-md-10 border bg-light">
+				<h3 id = "heading"></h3>
 				<div id="display_qry" class="h6 text-danger"></div>
 				<div id="display_array" class="h6 text-danger"></div>
-				<table class="table">
+				<table class="table" id="table">
 					<thead id="thead">
 						<tr>
 							<th>ID</th>
@@ -53,6 +54,7 @@
 	</div>
 	<script>
 		$(document).ready(function(){
+			
 			$('#getRow').on('click', function (e) {
 				e.preventDefault();
 				$.ajax({
@@ -60,6 +62,7 @@
 						type: 'post',
 						dataType :'json'
 					}).done(function(res){
+						$('#heading').html('getrows<hr/>');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -74,6 +77,7 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
+						$('#heading').html('get_rows_sort<hr/>');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -88,6 +92,7 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
+						$('#heading').html('Get Rows In like<hr/>');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -102,6 +107,7 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
+						$('#heading').html('Join<hr/>');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -116,10 +122,10 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
+						$('#heading').html('Get_Distinct/Unique_Row<hr/>');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
-							console.log(res.data);
 							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
 						});
 					});
@@ -131,6 +137,7 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
+						$('#heading').html('Single Row<hr/>');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$('#tbody').append("<tr><td>"+res.data['id']+"</td><td>"+res.data['name']+"</td><td>"+res.data['email']+"</td><td>"+res.data['city']+"</td></tr>");
@@ -143,8 +150,10 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#display_qry').html(res.qry);
-						$('#display_array').html(res.data);
+						$('#heading').html('Get Total Count<hr/>');
+						$('#display_qry').html(res.qry+'<hr/>');
+						$('#display_array').html('Get Total Count '+res.data);
+						$('#table').hide();
 					});
 			});
 			$('#get_cnt').on('click', function (e) {
@@ -154,8 +163,130 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#display_qry').html(res.qry);
+						$('#heading').html('Get_Count<hr/>');
+						$('#display_qry').html(res.qry+'<hr/>');
+						$('#display_array').html('Get Count '+res.data);
+						$('#table').hide();
+					});
+			});
+			$("#insert").on('click', function (e) {
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/insert_data') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#table').show();
+						$('#heading').html('Insert Row<hr/>');
+						$('#display_qry').html(res.qry+'<hr/>');
+						$('#display_array').html(res.id + ' number id inserted');
+						$('#tbody').empty();
+						$.each(res.data, function(index, val) {
+							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
+						});
+					});
+			});
+			$('#update').on('click', function (e) {
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/update_data') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#heading').html('Update Row<hr/>');
+						$('#display_qry').html(res.qry+'<hr/>');
 						$('#display_array').html(res.data);
+						$('#table').hide();
+					});
+			});
+			$('#delete').on('click', function (e) {
+				$('#table').hide();
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/delete_data') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#heading').html('Delete Row<hr/>');
+						$('#display_qry').html(res.qry+'<hr/>');
+						$('#display_array').html(res.data +'row deleted');
+						$('#table').hide();
+					});
+			});
+			$('#gets-value').on('click', function (e) {
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/get_singel_value') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#table').show();
+						$('#heading').html('Get Single Value<hr/>');
+						$('#display_qry').html(res.qry);
+						$('#display_array').empty();
+						$('#tbody').empty();
+						$('#tbody').append("<tr><td></td><td></td><td></td><td>"+res.data+"</td>");
+					});
+			});
+			$('#customQ').on('click', function (e) {
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/custom_query') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#heading').html('Custom Query<hr/>');
+						$('#display_qry').html(res.qry+'<hr/>');
+						$('#display_array').empty();
+						$('#tbody').empty();
+						$.each(res.data, function(index, val) {
+							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
+						});
+					});
+			});
+			$('#getResult').on('click', function (e) {
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/get_result') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#table').show();
+						$('#heading').html('Get Result<hr/>');
+						$('#display_qry').html(res.qry);
+						$('#tbody').empty();
+						$.each(res.data, function(index, val) {
+							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
+					 	});
+					});
+			});
+			$('#check').on('click', function (e) {
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/check_availability') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#heading').html('Check Availability<hr/>');
+						$('#display_qry').html(res.qry+'<hr/>');
+						$('#display_array').html('Check Availability ='+res.data);
+						$('#table').hide();
+					});
+			});
+			$('#find_in_set').on('click', function (e) {
+				e.preventDefault();
+				$.ajax({
+						url: '<?= site_url('custom_controller/find_in_set') ?>',
+						type: 'post',
+						dataType: 'json'
+					}).done(function(res){
+						$('#table').show();
+						$('#heading').html('Find Set<hr/>');
+						$('#display_qry').html(res.qry);
+						$('#display_array').empty();
+						$.each(res.data, function(index, val) {
+							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
+						});
 					});
 			});
 		});

@@ -249,7 +249,8 @@ class Custom_model extends CI_Model
     {
         $this->db->where($where);
         $this->db->or_where($or_where);
-        $sql=$this->db->_delete($table);
+        //$sql=$this->db->_delete($table);
+        $sql=$this->db->delete($table);
         // if(!$this->db->simple_query($sql)){
         // $result = $this->db->delete($table);
         if ($this->db->simple_query($sql)) {
