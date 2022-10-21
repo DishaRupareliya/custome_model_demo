@@ -1,6 +1,6 @@
  <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Custom_model extends CI_Model
+class MY_model extends CI_Model
 {
     public function __construct()
     {
@@ -135,7 +135,7 @@ class Custom_model extends CI_Model
      * @param  string $distinct_column column name
      * @return array                   
      */
-    public function getDistinctRows($table, $where = array(), $or_where = array(), $distinct_column)
+    public function getDistinctRows($table, $distinct_column, $where = array(), $or_where = array())
     {
         $this->db->select("DISTINCT($distinct_column)");
         //$this->db->select("*");

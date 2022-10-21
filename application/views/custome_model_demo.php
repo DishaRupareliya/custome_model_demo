@@ -12,57 +12,86 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-2 border bg-light">
-				<h5 class="fst-italic">Custome model</h5><hr/>
-				<ul class="navbar-nav">
-				<li><a href="" class="navbar-brand" id="getRow">Get Rows</a></li>
-				<li><a href="" class="navbar-brand" id="getR_sort">Get Rows Sorted</a></li>
-				<li><a href="" class="navbar-brand" id="getR_inlike">Get Rows Where In Like</a></li>
-				<li><a href="" class="navbar-brand" id="join">Get Rows Where Join</a></li>
-				<li><a href="" class="navbar-brand" id="dis-row">Get Distinct Rows</a></li>
-				<li><a href="" class="navbar-brand" id="s-rows">Get Single Row</a></li>
-				<li><a href="" class="navbar-brand" id="total_cnt">Get Total Count</a></li>
-				<li><a href="" class="navbar-brand" id="get_cnt">Get Count</a></li>
-				<li><a href="" class="navbar-brand" id="insert">Insert Row</a></li>
-				<li><a href="" class="navbar-brand" id="update">Update Row</a></li>
-				<li><a href="" class="navbar-brand " id="delete">Delete Row</a></li>
-				<li><a href="" class="navbar-brand" id="gets-value">Get Single Value</a></li>
-				<li><a href="" class="navbar-brand" id="customQ">customQuery</a></li>
-				<li><a href="" class="navbar-brand" id="getResult">getResult</a></li>
-				<li><a href="" class="navbar-brand" id="check">Check Availability</a></li>
-				<li><a href="" class="navbar-brand" id="find_in_set">Find In Set</a></li>
-				</ul>
+			<div class="col-md-3">
+				<div class="alert alert-dark text-center" role="alert">
+	  				<h2 class=" fst-italic"><li class='list-group-item'>Custome Model</li></h2>
+				</div>
 			</div>
-			<div class="col-md-10 border bg-light">
-				<h3 id = "heading"></h3>
-				<div id="display_qry" class="h6 text-danger"></div>
-				<div id="display_array" class="h6 text-danger"></div>
-				<table class="table" id="table">
-					<thead id="thead">
-						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Email</th>
-							<th>City</th>
-						</tr>
-					</thead>
-					<tbody id="tbody"></tbody>
-				</table>
-				
+			<div class="col-md-9">
+				<div class="alert alert-dark text-center" role="alert">
+					<div class="btn-toolbar mb-3">
+						  <div class="btn-group me-2 col-md-2" role="group" aria-label="First group">
+						    <button type="button" class="btn btn-success">Search</button>
+						  </div>
+						  <div class=" col-md-9">
+						    <input type="text" class="form-control" placeholder="Input group example">
+						  </div>
+						</div>
+
+	  				<!-- <li class='list-group-item col-7'>
+	  					
+						<input type="number" name="text_num" id="text_num" class="form-control">
+						<button>Search</button>
+					</li> -->
+				</div>
+			</div>
+		</div>
+		<div class="row pt-2">
+			<div class="col-md-3">
+				<div class="card">
+				<h5 class="card-header fst-italic"><a href="" class="nav-link text-dark" id="c_model">Model Methods</a></h5>
+				<ul class="list-group list-group-flush">
+					<?php foreach ($list_item as $key => $value): ?>
+						<li class='list-group-item'><a href="" class="nav-link text-dark" id="<?= $key ?>"><?= $value ?></a></li>
+					<?php endforeach ?>
+				  </ul>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div class="card mb-3" id="section1">
+					<h4 class="card-header fst-italic" id = "heading">Custom model</h4>
+					<div class="card-body p-2">
+						<div id="display_qry" class="h5 text-danger"></div>
+						<div id="display_array" class="h5 text-danger"></div>
+					</div>
+				</div>
+				<div class="card" id="section2">
+					<h4 class="card-header fst-italic" id = "heading">Table Data</h4>
+					<div class="card-body p-4">
+						<table class="table">
+							<thead id="thead">
+								<tr>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Email</th>
+									<th>City</th>
+								</tr>
+							</thead>
+							<tbody id="tbody"></tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div> 
 	</div>
+
 	<script>
 		$(document).ready(function(){
-			
+			$('#section1').hide();
+			$('#section2').hide();
+			$('#c_model').on('click', function () {
+				location.reload();
+			});
 			$('#getRow').on('click', function (e) {
+				$('#section1').show();
+				$('#section2').show();
 				e.preventDefault();
 				$.ajax({
 						url: '<?= site_url('custom_controller/getrows') ?>',
 						type: 'post',
 						dataType :'json'
 					}).done(function(res){
-						$('#heading').html('getrows<hr/>');
+						$('#heading').html('Get Rows');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -72,12 +101,14 @@
 			});
 			$('#getR_sort').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_rows_sort') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('get_rows_sort<hr/>');
+						$('#heading').html('Get Rows Sort');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -87,12 +118,14 @@
 			});
 			$('#getR_inlike').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_rows_inlike') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get Rows In like<hr/>');
+						$('#heading').html('Get Rows In like');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -102,12 +135,14 @@
 			});
 			$('#join').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/join') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Join<hr/>');
+						$('#heading').html('Join');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -117,12 +152,14 @@
 			});
 			$('#dis-row').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/Get_Distinct_R') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get_Distinct/Unique_Row<hr/>');
+						$('#heading').html('Get Distinct/Unique Row');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -132,12 +169,14 @@
 			});
 			$('#s-rows').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/single_row') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Single Row<hr/>');
+						$('#heading').html('Single Row');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$('#tbody').append("<tr><td>"+res.data['id']+"</td><td>"+res.data['name']+"</td><td>"+res.data['email']+"</td><td>"+res.data['city']+"</td></tr>");
@@ -145,40 +184,44 @@
 			});
 			$('#total_cnt').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_total_count') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get Total Count<hr/>');
-						$('#display_qry').html(res.qry+'<hr/>');
+						$('#heading').html('Get Total Count');
+						$('#display_qry').html(res.qry);
 						$('#display_array').html('Get Total Count '+res.data);
 						$('#table').hide();
 					});
 			});
 			$('#get_cnt').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_count') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get_Count<hr/>');
-						$('#display_qry').html(res.qry+'<hr/>');
+						$('#heading').html('Get Count');
+						$('#display_qry').html(res.qry);
 						$('#display_array').html('Get Count '+res.data);
-						$('#table').hide();
 					});
 			});
 			$("#insert").on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/insert_data') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#table').show();
-						$('#heading').html('Insert Row<hr/>');
-						$('#display_qry').html(res.qry+'<hr/>');
+						$('#heading').html('Insert Row');
+						$('#display_qry').html(res.qry);
 						$('#display_array').html(res.id + ' number id inserted');
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -188,40 +231,42 @@
 			});
 			$('#update').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/update_data') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Update Row<hr/>');
-						$('#display_qry').html(res.qry+'<hr/>');
+						$('#heading').html('Update Row');
+						$('#display_qry').html(res.qry);
 						$('#display_array').html(res.data);
-						$('#table').hide();
 					});
 			});
 			$('#delete').on('click', function (e) {
-				$('#table').hide();
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/delete_data') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Delete Row<hr/>');
-						$('#display_qry').html(res.qry+'<hr/>');
+						$('#heading').html('Delete Row');
+						$('#display_qry').html(res.qry);
 						$('#display_array').html(res.data +'row deleted');
-						$('#table').hide();
 					});
 			});
 			$('#gets-value').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_singel_value') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#table').show();
-						$('#heading').html('Get Single Value<hr/>');
+						$('#heading').html('Get Single Value');
 						$('#display_qry').html(res.qry);
 						$('#display_array').empty();
 						$('#tbody').empty();
@@ -230,13 +275,15 @@
 			});
 			$('#customQ').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/custom_query') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Custom Query<hr/>');
-						$('#display_qry').html(res.qry+'<hr/>');
+						$('#heading').html('Custom Query');
+						$('#display_qry').html(res.qry);
 						$('#display_array').empty();
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -246,13 +293,14 @@
 			});
 			$('#getResult').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_result') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#table').show();
-						$('#heading').html('Get Result<hr/>');
+						$('#heading').html('Get Result');
 						$('#display_qry').html(res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -262,28 +310,31 @@
 			});
 			$('#check').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/check_availability') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Check Availability<hr/>');
-						$('#display_qry').html(res.qry+'<hr/>');
+						$('#heading').html('Check Availability');
+						$('#display_qry').html(res.qry);
 						$('#display_array').html('Check Availability ='+res.data);
-						$('#table').hide();
 					});
 			});
 			$('#find_in_set').on('click', function (e) {
 				e.preventDefault();
+				$('#section1').show();
+				$('#section2').show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/find_in_set') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#table').show();
-						$('#heading').html('Find Set<hr/>');
+						$('#heading').html('Find Set');
 						$('#display_qry').html(res.qry);
 						$('#display_array').empty();
+						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
 							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
 						});
