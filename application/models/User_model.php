@@ -8,18 +8,16 @@ class User_model extends MY_model
         $this->load->model('my_model');
     }
 
-    public function get_rows(){
-        return $this->my_model->getRows('user_custom_demo', [], [], null, '*');
+    public function get_rows($city = ''){
+        return $this->my_model->getRows('user_custom_demo', $city, [], null, '*');
     }
 
-    public function get_Rows_Sort(){
-        $where = [ 'id' => '2'];
-        return $this->my_model->getRowsSorted('user_custom_demo',$where,'','name');
+    public function get_Rows_Sort($id = ''){
+        return $this->my_model->getRowsSorted('user_custom_demo',$id,'','name');
     }
 
-    public function get_Rows_Inlike(){
-        $where = [ 'id' => '6'];
-        return $this->my_model->getRowsWhereInLike('user_custom_demo',$where);
+    public function get_Rows_Inlike($id = ''){
+        return $this->my_model->getRowsWhereInLike('user_custom_demo',$id);
     }
 
     public function Join(){
@@ -29,15 +27,15 @@ class User_model extends MY_model
     }
 
     public function get_distinct_Row(){
-        $where = [ 'id' => '1'];
-        return $this->my_model->getDistinctRows('user_custom_demo', $where, '', 'id');
+        // $where = [ 'id' => '4'];
+        return $this->my_model->getDistinctRows('user_custom_demo', 'city',[], []);
     }
 
     public function single_Row(){
         $where = [ 
             'city' => 'gondal'
         ];
-        return $this->my_model->getSingleRow('user_custom_demo', $where,'array()');
+        return $this->my_model->getSingleRow('user_custom_demo', $where,'array');
     }
 
     public function get_Total_Count(){
@@ -48,23 +46,23 @@ class User_model extends MY_model
         return $this->my_model->getCount('user_custom_demo');
     }
 
-    public function insertData(){
+    public function insertData($name, $email, $city){
         $array = [
-            'name'  => 'disha',
-            'email' =>  'disha@gmail.com',
-            'city'  => 'Rajkot'
+            'name'  => $name,
+            'email' =>  $email,
+            'city'  => $city
         ];
         return $this->my_model->insertRow('user_custom_demo',$array);
     }
 
-    public function updateData(){
+    public function updateData($record){
         $array = [
-            'name' => 'abc',
-            'email'=> 'abc@gmail.com',
-            'city' => 'Rajkot'
+            'name' => $record['data']['name'],
+            'email' => $record['data']['email'],
+            'city' => $record['data']['city']
         ];
-        $where = [ 'id' => '1'];
-        return $this->my_model->updateRow('user_custom_demo', $array, $where);
+        $where = [ 'id' => $record['id']];
+        return $this->my_model->updateRow('user_custom_demo',$array, $where);
     }
 
     public function deleteData(){
@@ -100,6 +98,11 @@ class User_model extends MY_model
     }
 
     public function find_In_Set(){
-        return $this->my_model->findInSet('user_custom_demo', 'city', 'Gondal');
+        $where = [ 'id' => '20'];
+        return $this->my_model->findInSet('user_custom_demo', 'city', 'Rajkot');
+    }
+
+    public function fetch_single_row($id = ''){
+       return $this->my_model->getRowsWhereInLike('user_custom_demo', $id);
     }
 }

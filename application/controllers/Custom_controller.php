@@ -18,7 +18,8 @@ class Custom_controller extends My_Controller {
 	}
 
 	public function getrows(){
-		$data = $this->umd->get_rows();
+		$city = $this->input->post();
+		$data = $this->umd->get_rows($city);
 		 $qry = $this->db->last_query();
 		 $result = [
 		 	'data' => $data,
@@ -28,7 +29,8 @@ class Custom_controller extends My_Controller {
 	}
 
 	public function get_rows_sort(){
-		$data = $this->umd->get_Rows_Sort();
+		$id = $this->input->post();
+		$data = $this->umd->get_Rows_Sort($id);
 		$qry = $this->db->last_query();
 		$result = [
 			'data' => $data,
@@ -38,7 +40,8 @@ class Custom_controller extends My_Controller {
 	}
 
 	public function get_rows_inlike(){
-		$data = $this->umd->get_Rows_Inlike();
+		$id = $this->input->post();
+		$data = $this->umd->get_Rows_Inlike($id);
 		$qry = $this->db->last_query();
 		$result = [
 			'data' => $data,
@@ -98,7 +101,10 @@ class Custom_controller extends My_Controller {
 	}
 
 	public function insert_data(){
-		$last_id= $this->umd->insertData();
+		$name = $this->input->post('name');
+		$email = $this->input->post('email');
+		$city = $this->input->post('city');
+		$last_id= $this->umd->insertData($name, $email, $city);
 		$qry = $this->db->last_query();
 		$where = [ 'id' => $last_id ];
 		$data = $this->umd->getRows('user_custom_demo', $where);
@@ -111,11 +117,13 @@ class Custom_controller extends My_Controller {
 	}
 
 	public function update_data(){
-		$data = $this->umd->updateData();
+		$record = $this->input->post();
+		$data = $this->umd->updateData($record);
 		$qry = $this->db->last_query();
 		$result =[
 			'data' => $data,
-			'qry'  => $qry
+			'qry'  => $qry,
+			'id' => $record['id']
 		];
 		echo json_encode($result);
 	}
@@ -178,6 +186,12 @@ class Custom_controller extends My_Controller {
 			'qry'  => $qry
 		];
 		echo json_encode($result);
+	}
+
+	public function fetch_value(){
+		$id = $this->input->post();
+		$data = $this->umd->fetch_single_row($id);
+		echo json_encode($data);
 	}
 }
 
