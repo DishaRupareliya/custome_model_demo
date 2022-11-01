@@ -65,9 +65,9 @@ class User_model extends MY_model
         return $this->my_model->updateRow('user_custom_demo',$array, $where);
     }
 
-    public function deleteData(){
-        $where = [ 'id' => '28'];
-        return $this->my_model->deleteRow('user_custom_demo', $where);
+    public function deleteData($id = ""){
+        // $where = [ 'id' => '89'];
+        return $this->my_model->deleteRow('user_custom_demo', $id);
     }
 
     public function get_Singel_Value(){

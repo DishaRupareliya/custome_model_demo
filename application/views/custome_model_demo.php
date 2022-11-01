@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<form  id="myform">
+		<form  id="myform" action="javascript:void(0)">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="alert alert-dark text-center" role="alert">
@@ -41,8 +41,8 @@
 								        	<button type="button" class="btn-close" aria-label="Close"></button>
 								      	</div>
 								      	<div class="modal-body">
-								      		<div class="form-floating mb-3">
 								      		<input type="hidden" name="hid" id='hid' class="form-control" value="" >
+								      		<div class="form-floating mb-3">
 											  <input type="text" class="form-control" id="name" name='name' placeholder="enter name">
 											  <label for="name">Name</label>
 											</div>
@@ -78,7 +78,7 @@
 				  </ul>
 				</div>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-9" id="all_section">
 				<div class="card mb-3" id="section1">
 					<h4 class="card-header fst-italic" id = "heading">Custom model</h4>
 					<div class="card-body p-2">
@@ -109,8 +109,7 @@
 
 	<script>
 		$(document).ready(function(){
-			$('#input1').hide();
-			$('#dropdown1').hide();
+			searchbox_hide();
 			section_hide();
 			$('#c_model').on('click', function () {
 				location.reload();
@@ -142,12 +141,10 @@
 							dataType :'json',
 							data : { city : city}
 						}).done(function(res){
-							$('#heading').html('Get Rows');
-							$('#display_qry').html(res.qry);
+							message('Get Rows',res.qry);
 							$('#tbody').empty();
 							$.each(res.data, function(index, val) {
-								$('#msg').empty();
-								$('.table').show();
+								table_show();
 								$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
 							});
 						});
@@ -156,8 +153,7 @@
 			});
 			$('#getR_sort').on('click', function (e) {
 				e.preventDefault();
-				$('#input1').show();
-				$('#dropdown1').hide();
+				inputbox_show();
 				section_hide();
 				$('#btn-search').on('click', function (e) {
 					e.preventDefault();
@@ -169,9 +165,8 @@
 			});
 			$('#getR_inlike').on('click', function (e) {
 				e.preventDefault();
-				$('#input1').show();
-				$('#dropdown1').hide();
-				$('#display_array').empty();
+				inputbox_show();
+				// $('#display_array').empty();
 				section_hide();
 				$('#btn-search').on('click', function (e) {
 					e.preventDefault();
@@ -183,8 +178,7 @@
 			});
 			$('#join').on('click', function (e) {
 				e.preventDefault();
-				$('#input1').hide();
-				$('#dropdown1').hide();
+				searchbox_hide();
 				$('#display_array').empty();
 				section_show();
 				$.ajax({
@@ -192,13 +186,11 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Join');
-						$('#display_qry').html(res.qry);
+						message('Join',res.qry);
 						$('#tbody').empty();
 						if(res.data != ''){
 							$.each(res.data, function(index, val) {
-								$('#msg').empty();
-								$('.table').show();
+								table_show();
 								$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
 							});
 						}else{
@@ -216,8 +208,7 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get Distinct/Unique Row');
-						$('#display_qry').html(res.qry);
+						message('Get Distinct/Unique Row',res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
 							$('#msg').empty();
@@ -235,36 +226,35 @@
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Single Row');
-						$('#display_qry').html(res.qry);
+						message('Single Row',res.qry);
 						$('#tbody').empty();
 						$('#tbody').append("<tr><td>"+res.data['id']+"</td><td>"+res.data['name']+"</td><td>"+res.data['email']+"</td><td>"+res.data['city']+"</td></tr>");
 					});
 			});
 			$('#total_cnt').on('click', function (e) {
 				e.preventDefault();
+				searchbox_hide();
 				section2_hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_total_count') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get Total Count');
-						$('#display_qry').html(res.qry);
+						message('Get Total Count',res.qry);
 						$('#display_array').html('Total Count '+res.data);
 						$('#table').hide();
 					});
 			});
 			$('#get_cnt').on('click', function (e) {
 				e.preventDefault();
+				searchbox_hide();
 				section2_hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_count') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get Count');
-						$('#display_qry').html(res.qry);
+						message('Get Count',res.qry);
 						$('#display_array').html('Count '+res.data);
 					});
 			});
@@ -287,15 +277,14 @@
 						dataType: 'json',
 						data: data
 					}).done(function(res){
-						$('#heading').html('Insert Row');
-						$('#display_qry').html(res.qry);
+						message('Insert Row',res.qry);
 						$('#display_array').html(res.id + ' number id inserted');
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
 							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
+							$('#myform').trigger('reset');
 						});
 						
-						$('#myform').trigger('reset');
 					});
 				});
 			});
@@ -307,10 +296,9 @@
 			$('#update').on('click', function (e) {
 				e.preventDefault();
 				section_hide();
-				$('#input1').show();
-				$('#dropdown1').hide();
-				$('#btn-search').on('click', function (e) {
-					e.preventDefault();
+				inputbox_show();
+				$('#btn-search').on('click', function () {
+					section_hide();
 					var id = $('#id').val();
 					$.ajax({
 						url: '<?= site_url('custom_controller/fetch_value') ?>',
@@ -341,8 +329,7 @@
 									data: { data, id},
 									dataType: 'json'
 								}).done(function(res){
-									$('#heading').html('Update Row');
-									$('#display_qry').html(res.qry);
+									message('Update Row',res.qry);
 									$('.table').hide();
 									$('#msg').html('<h4 class="text-danger">'+res.id + ' number id '+ res.data+'</h4>'); 
 									$('#myform').trigger('reset');
@@ -353,29 +340,41 @@
 			});
 			$('#delete').on('click', function (e) {
 				e.preventDefault();
-				section2_hide();
-				$.ajax({
+				inputbox_show();
+				section_hide();
+				$('#btn-search').on('click', function (e) {
+					e.preventDefault();
+					var id = $('#id').val();
+					$.ajax({
 						url: '<?= site_url('custom_controller/delete_data') ?>',
 						type: 'post',
+						data: { id : id },
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Delete Row');
-						$('#display_qry').html(res.qry);
-						$('#display_array').html(res.data +'row deleted');
+						section_show();
+					 	message('Delete Row',res.qry);
+						$('.table').hide();
+						if(res.data == 1){
+						 	$('#msg').html('<h4 class="text-danger">row deleted : '+ res.data + '</h4>');
+						 	$('#myform').trigger('reset');
+						}else{
+							$('#msg').html('<h4 class="text-danger">'+res.data+'<h4>');
+						 	$('#myform').trigger('reset');
+						}
 					});
+				});
 			});
 			$('#gets-value').on('click', function (e) {
 				e.preventDefault();
+				searchbox_hide();
 				section_show();
-				$('#msg').empty();
-				$('.table').show();
+				table_show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_singel_value') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get Single Value');
-						$('#display_qry').html(res.qry);
+						message('Get Single Value',res.qry);
 						$('#display_array').empty();
 						$('#tbody').empty();
 						$('#tbody').append("<tr><td></td><td></td><td></td><td>"+res.data+"</td>");
@@ -384,15 +383,13 @@
 			$('#customQ').on('click', function (e) {
 				e.preventDefault();
 				section_show();
-				$('#msg').empty();
-				$('.table').show();
+				table_show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/custom_query') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Custom Query');
-						$('#display_qry').html(res.qry);
+						message('Custom Query',res.qry);
 						$('#display_array').empty();
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -402,16 +399,15 @@
 			});
 			$('#getResult').on('click', function (e) {
 				e.preventDefault();
+				searchbox_hide();
 				section_show();
-				$('#msg').empty();
-				$('.table').show();
+				table_show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/get_result') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Get Result');
-						$('#display_qry').html(res.qry);
+						message('Get Result',res.qry);
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
 							$('#tbody').append("<tr><td>"+val.id+"</td><td>"+val.name+"</td><td>"+val.email+"</td><td>"+val.city+"</td></tr>");
@@ -420,29 +416,28 @@
 			});
 			$('#check').on('click', function (e) {
 				e.preventDefault();
+				searchbox_hide();
 				section2_hide();
 				$.ajax({
 						url: '<?= site_url('custom_controller/check_availability') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Check Availability');
-						$('#display_qry').html(res.qry);
+						message('Check Availability',res.qry);
 						$('#display_array').html('Check Availability ='+res.data);
 					});
 			});
 			$('#find_in_set').on('click', function (e) {
 				e.preventDefault();
 				section_show();
-				$('#msg').empty();
-				$('.table').show();
+				searchbox_hide();
+				table_show();
 				$.ajax({
 						url: '<?= site_url('custom_controller/find_in_set') ?>',
 						type: 'post',
 						dataType: 'json'
 					}).done(function(res){
-						$('#heading').html('Find Set');
-						$('#display_qry').html(res.qry);
+						message('Find Set',res.qry);
 						$('#display_array').empty();
 						$('#tbody').empty();
 						$.each(res.data, function(index, val) {
@@ -465,6 +460,18 @@
 	}
 	function searchbox_hide(){
 		$('#input1').hide();
+		$('#dropdown1').hide();
+	}
+	function table_show(){
+		$('#msg').empty();
+		$('.table').show();
+	}
+	function message($heading, $query){
+		$('#heading').html($heading);
+		$('#display_qry').html($query);
+	}
+	function inputbox_show(){
+		$('#input1').show();
 		$('#dropdown1').hide();
 	}
 

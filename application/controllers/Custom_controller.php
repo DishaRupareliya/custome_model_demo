@@ -129,7 +129,8 @@ class Custom_controller extends My_Controller {
 	}
 
 	public function delete_data(){
-		$data = $this->umd->deleteData();
+		$id = $this->input->post();
+		$data = $this->umd->deleteData($id);
 		$qry = $this->db->last_query();
 		$result =[
 			'data' => $data,
